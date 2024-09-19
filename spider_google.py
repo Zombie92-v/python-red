@@ -39,6 +39,6 @@ def red_spider_chrome(url=''):
             res.description = description.get_attribute('content')
         except Exception as e:
             print(e)
-    finally:
-        print(res.masterImgList)
+    except Exception as e:
+        print(e)
     return res
