@@ -3,9 +3,11 @@ from selenium.webdriver.common.by import By
 from DriverManage import driver
 from Tools import parseMp4
 from dto.Resp import *
+from Tools import *
 
 
 def red_spider_chrome(url=''):
+    url = parseUrl(url)
     res = RedContextResp()
     try:
         driver.get(url)
