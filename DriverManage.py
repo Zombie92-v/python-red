@@ -18,16 +18,16 @@ class SingletonDriver:
         options.use_chromium = True
 
         # 设置参数
-        # No_Image_loading = {"profile.managed_default_content_settings.images": 2}
-        # options.add_experimental_option("prefs", No_Image_loading)
+        No_Image_loading = {"profile.managed_default_content_settings.images": 2}
+        options.add_experimental_option("prefs", No_Image_loading)
         options.add_experimental_option('useAutomationExtension', False)
         options.add_experimental_option('excludeSwitches', ['enable-automation'])
         options.add_experimental_option('excludeSwitches', ['enable-automation'])
 
         # 设置无头参数
-        # options.add_argument('--headless')
+        options.add_argument('--headless')
         options.add_argument('--disable-gpu')
-        # options.add_argument('window-size=450*450')
+        options.add_argument('window-size=450*450')
         options.add_argument('--start-maximized')
         options.add_argument('--disable-infobars')
         options.add_argument("--remote-allow-origins=*")
