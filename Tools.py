@@ -6,7 +6,10 @@ def parseUrl(text=None):
     # 正则表达式匹配URL
     url_pattern = r'(https?://[^\s,，]+)'
     url = re.findall(url_pattern, text)
+    if(len(url)==0):
+        return text
     return url[0]
+
 def traverse_json(data, search=None, res=[]):
     if isinstance(data, dict):
         for k, v in data.items():
