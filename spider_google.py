@@ -43,4 +43,7 @@ def red_spider_chrome(url=''):
             print(e)
     except Exception as e:
         print(e)
+    finally:
+        # 设置为空页面
+        driver.get("about:blank")
     return res

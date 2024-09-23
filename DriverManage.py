@@ -5,15 +5,15 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
-
+import os
 class SingletonDriver:
     driver = None
 
     def __init__(self):
         if sys.platform.startswith('linux'):
-            service = Service(executable_path="./driver/chromedriver")
+            service = Service(executable_path="./driver/chromedriver", log_path=os.devnull)
         else:
-            service = Service(executable_path="./driver/chromedriver.exe")
+            service = Service(executable_path="./driver/chromedriver.exe", log_path=os.devnull)
         options = webdriver.ChromeOptions()
         options.use_chromium = True
 
@@ -21,8 +21,7 @@ class SingletonDriver:
         No_Image_loading = {"profile.managed_default_content_settings.images": 2}
         options.add_experimental_option("prefs", No_Image_loading)
         options.add_experimental_option('useAutomationExtension', False)
-        options.add_experimental_option('excludeSwitches', ['enable-automation'])
-        options.add_experimental_option('excludeSwitches', ['enable-automation'])
+        options.add_experimental_option('excludeSwitches', ['enable-automation','enable-logging'])
 
         # 设置无头参数
         options.add_argument('--headless')
