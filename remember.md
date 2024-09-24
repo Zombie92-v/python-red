@@ -1,1 +1,2 @@
-pip freeze > requirements.txt
+更新：pip freeze > requirements.txt
+安装：pip install -r requirements.txt
