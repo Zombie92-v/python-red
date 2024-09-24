@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 
-from dto.Req import *
+from dto.req import *
+from dto.resp import suc
 from spider_google import red_spider_chrome
+from spider_by_requests import red_spider_requests
 
 app = FastAPI()
 
@@ -19,4 +21,6 @@ def shutdown():
 
 @app.post("/red/context")
 async def redContext(req: RedContextReq):
-    return red_spider_chrome(req.url)
+    if(req.type=='mata'):
+        return suc(red_spider_requests(req.url))
+    return suc(red_spider_chrome(url=req.url))

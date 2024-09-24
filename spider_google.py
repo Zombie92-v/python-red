@@ -1,20 +1,18 @@
 from selenium.webdriver.common.by import By
 
-from DriverManage import driver
-from Tools import parseMp4
-from dto.Resp import *
+from DriverManage import singleDriver
+from dto.resp import *
 from Tools import *
-
 
 def red_spider_chrome(url=''):
     url = parseUrl(url)
     res = RedContextResp()
     try:
-        driver.get(url)
-        pageHtml = driver.page_source
+
+        pageHtml = singleDriver.getPage(url)
 
         res.mp4List = parseMp4(pageHtml)
-
+        driver = singleDriver.getDriver()
         imgList = []
         try:
             list = driver.find_elements(By.CSS_SELECTOR, "meta[name='og:image']")
@@ -45,5 +43,5 @@ def red_spider_chrome(url=''):
         print(e)
     finally:
         # 设置为空页面
-        driver.get("about:blank")
+        singleDriver.openBlank()
     return res

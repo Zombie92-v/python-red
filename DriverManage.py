@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-
+from FakeUserAgentManage import ua
 import os
 class SingletonDriver:
     driver = None
@@ -38,6 +38,19 @@ class SingletonDriver:
             self.driver = webdriver.Chrome(service=service, options=options)
         except Exception as e:
             self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+    def getDriver(self):
+        return self.driver
+    def getPage(self,url):
+        # 启用网络调试功能
+        self.driver.execute_cdp_cmd('Network.enable', {})
+        # 使用 DevTools 设置用户代理和其他请求头
+        userAgent = ua.chrome
+        self.driver.execute_cdp_cmd('Network.setUserAgentOverride', {
+            "userAgent": f"{userAgent}",  # 设置自定义 User-Agent
+        })
+        self.driver.get(url)
+        return self.driver.page_source
+    def openBlank(self):
+        self.driver.get("about:blank")
 
-
-driver = SingletonDriver().driver
+singleDriver = SingletonDriver()
