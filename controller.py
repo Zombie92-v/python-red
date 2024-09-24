@@ -21,6 +21,7 @@ def shutdown():
 
 @app.post("/red/context")
 async def redContext(req: RedContextReq):
-    if(req.type=='mata'):
-        return suc(red_spider_requests(req.url))
-    return suc(red_spider_chrome(url=req.url))
+    if(req.type=='all'):
+        return suc(red_spider_chrome(url=req.url))
+    return suc(red_spider_requests(req.url))
+
