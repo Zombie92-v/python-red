@@ -1,6 +1,7 @@
 from requests.api import get
 from dto.resp import *
 from bs4 import BeautifulSoup
+from download import download_resource_with_progress
 
 
 def red_spider_requests(url=''):
@@ -23,7 +24,9 @@ def red_spider_requests(url=''):
     try:
         list = soup.select("meta[name='og:video']")
         for i in list:
-            mp4List.append(i["content"])
+            url = i["content"]
+            url = download_resource_with_progress(url=url)
+            mp4List.append(url)
     except Exception as e:
         print(e)
     res.mp4List = mp4List

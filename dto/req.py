@@ -5,3 +5,5 @@ from pydantic import BaseModel
 class RedContextReq(BaseModel):
     url: str
     type: str = None
+class RedChatReq(BaseModel):
+    txt: str

@@ -2,13 +2,17 @@ from bs4 import BeautifulSoup
 import json
 import re
 
+import download
+
+
 def parseUrl(text=None):
     # 正则表达式匹配URL
     url_pattern = r'(https?://[^\s,，]+)'
     url = re.findall(url_pattern, text)
-    if(len(url)==0):
+    if (len(url) == 0):
         return text
     return url[0]
+
 
 def traverse_json(data, search=None, res=[]):
     if isinstance(data, dict):
@@ -24,7 +28,7 @@ def traverse_json(data, search=None, res=[]):
 
 
 def parseMp4(page):
-    mp4List=[]
+    mp4List = []
     try:
         bsObj = BeautifulSoup(page, 'html.parser')
         bsElems = bsObj.find_all('script')
@@ -37,4 +41,5 @@ def parseMp4(page):
                 traverse_json(jsonData, search="masterUrl", res=mp4List)
     except Exception as e:
         print(e)
-    return mp4List
+    # 下载mp4
+    return list(map(lambda x: download.download_resource_with_progress(url=x), mp4List))
