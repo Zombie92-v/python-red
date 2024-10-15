@@ -42,4 +42,4 @@ def parseMp4(page):
     except Exception as e:
         print(e)
     # 下载mp4
-    return list(map(lambda x: download.download_resource_with_progress(url=x), mp4List))
+    return mp4List
