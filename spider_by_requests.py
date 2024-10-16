@@ -1,10 +1,13 @@
 from requests.api import get
+
+from Tools import parseUrl
 from dto.resp import *
 from bs4 import BeautifulSoup
 
 
 def red_spider_requests(url=''):
     """爬取视频 图片 """
+    url = parseUrl(url)
     url = get(url)
     text = url.content
     soup = BeautifulSoup(text, "html.parser")
@@ -53,4 +56,4 @@ def red_spider_requests(url=''):
 if __name__ == '__main__':
     res = red_spider_requests(
         "https://www.xiaohongshu.com/explore/66e5dfed0000000012010cc9?xsec_token=ABDkT-9Pi2lAeSysxHHtCZDJB1QCXfl35EeeLy7LogLkY=&xsec_source=pc_feed")
-    print(res)
+    print(res.masterImgList)
