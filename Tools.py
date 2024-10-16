@@ -42,4 +42,9 @@ def parseMp4(page):
     except Exception as e:
         print(e)
     # 下载mp4
-    return mp4List
+    return list(map(lambda item: convert_http_to_https(item), mp4List))
+
+def convert_http_to_https(url):
+    if url.startswith("http://"):
+        return url.replace("http://", "https://", 1)
+    return url

@@ -1,6 +1,6 @@
 from requests.api import get
 
-from Tools import parseUrl
+from Tools import *
 from dto.resp import *
 from bs4 import BeautifulSoup
 
@@ -20,7 +20,7 @@ def red_spider_requests(url=''):
             masterImgList.append(i["content"])
     except Exception as e:
         print(e)
-    res.masterImgList = masterImgList;
+    res.masterImgList = list(map(lambda item: convert_http_to_https(item), masterImgList))
     # 解析视频
     mp4List = []
     try:
@@ -30,7 +30,7 @@ def red_spider_requests(url=''):
             mp4List.append(url)
     except Exception as e:
         print(e)
-    res.mp4List = mp4List
+    res.mp4List = list(map(lambda item: convert_http_to_https(item), mp4List))
     # 解析标题 关键字 内容描述
     try:
         title = soup.select_one("meta[name='og:title']")

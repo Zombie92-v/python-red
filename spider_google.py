@@ -16,7 +16,7 @@ def red_spider_chrome(url=''):
         try:
             list = driver.find_elements(By.CSS_SELECTOR, "meta[name='og:image']")
             for i in list:
-                imgList.append(i.get_attribute('content'))
+                imgList.append(convert_http_to_https(i.get_attribute('content')))
         except Exception as e:
             print(e)
         res.masterImgList = imgList
