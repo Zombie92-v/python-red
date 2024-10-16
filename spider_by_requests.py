@@ -15,8 +15,8 @@ def red_spider_requests(url=''):
     # 解析图片
     masterImgList = []
     try:
-        list = soup.select("meta[name='og:image']")
-        for i in list:
+        image = soup.select("meta[name='og:image']")
+        for i in image:
             masterImgList.append(i["content"])
     except Exception as e:
         print(e)
@@ -24,8 +24,8 @@ def red_spider_requests(url=''):
     # 解析视频
     mp4List = []
     try:
-        list = soup.select("meta[name='og:video']")
-        for i in list:
+        image = soup.select("meta[name='og:video']")
+        for i in image:
             url = i["content"]
             mp4List.append(url)
     except Exception as e:
