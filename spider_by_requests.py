@@ -1,16 +1,17 @@
+from bs4 import BeautifulSoup
 from requests.api import get
 
 from Tools import *
 from dto.resp import *
-from bs4 import BeautifulSoup
 
 
 def red_spider_requests(url=''):
     """爬取视频 图片 """
     url = parseUrl(url)
-    url = get(url)
+    url = get(url, proxies={"http": None, "https": None})
     text = url.content
     soup = BeautifulSoup(text, "html.parser")
+    print(soup)
     res = RedContextResp()
     # 解析图片
     masterImgList = []
@@ -34,7 +35,7 @@ def red_spider_requests(url=''):
     # 解析标题 关键字 内容描述
     try:
         title = soup.select_one("meta[name='og:title']")
-        res.title = title["content"]
+        res.title = title["content"].replace("小红书", "").replace("-", "").strip()
     except Exception as e:
         print(e)
     # 解析关键字
@@ -55,5 +56,5 @@ def red_spider_requests(url=''):
 
 if __name__ == '__main__':
     res = red_spider_requests(
-        "https://www.xiaohongshu.com/explore/66e5dfed0000000012010cc9?xsec_token=ABDkT-9Pi2lAeSysxHHtCZDJB1QCXfl35EeeLy7LogLkY=&xsec_source=pc_feed")
-    print(res.masterImgList)
+        "https://www.xiaohongshu.com/explore/67398893000000003c01caa2?xsec_token=ABAO1yC5N281L2A4EHaHNrUC9ZeLuBhbDD3plJXSWAKbo=&xsec_source=pc_feed")
+    print(res.mp4List)

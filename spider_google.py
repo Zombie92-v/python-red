@@ -1,8 +1,9 @@
 from selenium.webdriver.common.by import By
 
 from DriverManage import singleDriver
-from dto.resp import *
 from Tools import *
+from dto.resp import *
+
 
 def red_spider_chrome(url=''):
     url = parseUrl(url)
@@ -10,6 +11,7 @@ def red_spider_chrome(url=''):
     try:
 
         pageHtml = singleDriver.getPage(url)
+        print(pageHtml)
         res.mp4List = parseMp4(pageHtml)
         driver = singleDriver.getDriver()
         imgList = []
@@ -45,5 +47,6 @@ def red_spider_chrome(url=''):
         singleDriver.openBlank()
     return res
 if __name__ == '__main__':
-    res = red_spider_chrome(url="https://www.xiaohongshu.com/explore/66850be2000000001c0240af?app_platform=android&ignoreEngage=true&app_version=8.47.0&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBCG2KQiGauYzGxpbUzfybtNMwOdPg9bFbyUAKL6-LgHs=&author_share=1&xhsshare=CopyLink&shareRedId=N0tFRUk1Sks2NzUyOTgwNjY0OTc0Sz1C&apptime=1723794291&share_id=55f337af1c4546cdaed1db0e06333705")
+    res = red_spider_chrome(
+        url="https://www.xiaohongshu.com/explore/67346883000000001b010cfa?xsec_token=ABheASSYPcqzFhsmuUywUjdTz_Xmu0ftMnDmC_p-7gFg8=&xsec_source=pc_collect")
     print(res)
