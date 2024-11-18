@@ -8,10 +8,12 @@ from spider_google import red_spider_chrome
 from spider_by_requests import red_spider_requests
 from chat import *
 from fastapi import FastAPI, HTTPException,Request,Response
+
 from fastapi.responses import FileResponse
 from pathlib import Path
 import time
 import json
+from catch_net import red_catch
 
 
 from logUtil import log
@@ -98,3 +100,7 @@ async def get_video(filename: str):
         raise HTTPException(status_code=404, detail="文件未找到")
 
     return FileResponse(path=file_path, media_type="file/mp4", filename=filename)
+
+@app.post("/red/comments")
+async def comments(req: RedContextReq):
+    return suc(red_catch.commnts(req.url))

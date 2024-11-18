@@ -6,6 +6,8 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from FakeUserAgentManage import ua
 import os
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
 class SingletonDriver:
     driver = None
 
@@ -34,10 +36,13 @@ class SingletonDriver:
         options.add_argument('--disable-extensions')  # 禁止拓展
         options.add_argument(
             'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36')
+        # 启用性能日志捕获
+        capabilities = DesiredCapabilities.CHROME
+        capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
         try:
-            self.driver = webdriver.Chrome(service=service, options=options)
+            self.driver = webdriver.Chrome(service=service, options=options, desired_capabilities=capabilities)
         except Exception as e:
-            self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+            self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options, desired_capabilities=capabilities)
     def getDriver(self):
         return self.driver
     def getPage(self,url):

@@ -1,12 +1,9 @@
 import json
 import time
 
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-def extract_request_headers_and_body(driver, target_url_part, timeout=30):
+def extract_request_headers_and_body(driver, target_url_part,url , timeout=30, filter=None):
     """
     提取目标请求的 headers 和返回的 body 数据
     :param driver: WebDriver 实例
@@ -14,9 +11,11 @@ def extract_request_headers_and_body(driver, target_url_part, timeout=30):
     :param timeout: 超时时间（秒）
     :return: 请求的 URL 和解析后的 JSON 数据
     """
+    driver.get(url)
     start_time = time.time()
-    while time.time() - start_time < timeout:
 
+    while time.time() - start_time < timeout:
+        print(f"开始等待目标请求 '{target_url_part}'")
         logs = driver.get_log("performance")
         for entry in logs:
             try:
@@ -36,10 +35,11 @@ def extract_request_headers_and_body(driver, target_url_part, timeout=30):
                             headers = json.loads(entry["message"])["message"]["params"]["response"]["headers"]
                             print("请求头", headers)
                         except Exception:
-                            print("没有服务器")
+                            print("请求头解析失败")
 
                         print("content-type", headers.get("content-type", None))
-                        if headers is None or "application/json" not in headers.get("content-type", ""):
+                        if headers is None or (not filter and filter(headers)):
+                            print("过滤掉")
                             continue
                         # 提取请求的 ID
                         request_id = log["params"]["requestId"]
@@ -64,24 +64,23 @@ def extract_request_headers_and_body(driver, target_url_part, timeout=30):
 
 
 if __name__ == '__main__':
-    # 启用性能日志捕获
-    capabilities = DesiredCapabilities.CHROME
-    capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
-
-    service = Service("driver/chromedriver.exe")  # 替换为你的 chromedriver 路径
-    driver = webdriver.Chrome(service=service, desired_capabilities=capabilities)
+    from DriverManage import singleDriver
+    driver = singleDriver.getDriver()
+    print("""SDFsdf""")
 
     # 打开目标网页
     url = "https://www.xiaohongshu.com/explore/67346883000000001b010cfa?xsec_token=ABheASSYPcqzFhsmuUywUjdTz_Xmu0ftMnDmC_p-7gFg8=&xsec_source=pc_collect"  # 替换为目标网页 URL
     driver.get(url)
 
     # 定义目标请求的标识（例如 URL 的一部分）
-    # target_url_part = "/comment/page"  # 替换为你感兴趣的请求路径
-    target_url_part = "explore"  # 替换为你感兴趣的请求路径
+    target_url_part = "/comment/page"  # 评论
+    # target_url_part = "explore"  # 替换为你感兴趣的请求路径
 
     try:
         # 等待目标请求完成并获取 URL 和 JSON 数据
-        target_url, json_response = extract_request_headers_and_body(driver, target_url_part)
+        target_url, json_response = extract_request_headers_and_body(driver, target_url_part, filter=lambda h: 'json' in h.get(
+            "content-type"))
+
         print("目标请求的 URL：", target_url)
         response = json.loads(json.dumps(json_response, indent=4, ensure_ascii=False))
         for i in response['data']['comments']:

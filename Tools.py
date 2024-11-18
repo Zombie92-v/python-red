@@ -48,3 +48,7 @@ def convert_http_to_https(url):
     if url.startswith("http://"):
         return url.replace("http://", "https://", 1)
     return url
+
+if __name__ == '__main__':
+    print("Fdsafsdf")
+    print("Fdsafsdf")
