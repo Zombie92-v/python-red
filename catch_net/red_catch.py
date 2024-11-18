@@ -1,7 +1,7 @@
 from catch_net import extract_request_headers_and_body
 from DriverManage import singleDriver
 import json
-
+from catch_net.emo_util import replace_partial_emojis
 '''
 {
     "username": "Alice",
@@ -25,7 +25,7 @@ def commnts(url, target_url='/comment/page', filter=lambda h: 'json' in h.get("c
         obj = {
             'username': i['user_info']['nickname'],
             'avatar': i['user_info']['image'],
-            'comment': i['content'],
+            'comment': replace_partial_emojis(i['content']),
             'comment_pic': i.get('pictures', [{}])[0].get('url_pre', None) if i.get('pictures', []) else None,
             'like': i['like_count']
         }
