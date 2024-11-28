@@ -69,8 +69,9 @@ if __name__ == '__main__':
     print("""SDFsdf""")
 
     # 打开目标网页
-    url = "https://www.xiaohongshu.com/explore/67346883000000001b010cfa?xsec_token=ABheASSYPcqzFhsmuUywUjdTz_Xmu0ftMnDmC_p-7gFg8=&xsec_source=pc_collect"  # 替换为目标网页 URL
+    url = "https://www.bilibili.com/video/BV11BmVY3EPZ/?spm_id_from=333.1007.tianma.1-1-1.click"  # 替换为目标网页 URL
     driver.get(url)
+    print(driver.page_source)
 
     # 定义目标请求的标识（例如 URL 的一部分）
     target_url_part = "/comment/page"  # 评论

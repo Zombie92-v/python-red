@@ -11,7 +11,6 @@ def red_spider_chrome(url=''):
     try:
 
         pageHtml = singleDriver.getPage(url)
-        print(pageHtml)
         res.mp4List = parseMp4(pageHtml)
         driver = singleDriver.getDriver()
         imgList = []
