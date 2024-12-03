@@ -26,7 +26,7 @@ class SingletonDriver:
         options.add_experimental_option('excludeSwitches', ['enable-automation','enable-logging'])
 
         # 设置无头参数
-        # options.add_argument('--headless')
+        options.add_argument('--headless')
         options.add_argument('--disable-gpu')
         options.add_argument('window-size=1920,1080')
         options.add_argument('--start-maximized')
