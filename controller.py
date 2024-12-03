@@ -1,24 +1,35 @@
 import os
 from http.client import HTTPException
 
-
 from dto.req import *
 from dto.resp import suc
 from spider_google import red_spider_chrome
 from spider_by_requests import red_spider_requests
 from chat import *
-from fastapi import FastAPI, HTTPException,Request,Response
+from fastapi import FastAPI, HTTPException, Request, Response, Query
 
 from fastapi.responses import FileResponse
 from pathlib import Path
 import time
 import json
 from catch_net import red_catch
-
+from mapper import data_service, dto
 
 from logUtil import log
 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+# 忽略类型检查问题，直接使用
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 允许所有域名访问
+    allow_credentials=True,
+    allow_methods=["*"],  # 允许所有 HTTP 方法
+    allow_headers=["*"],  # 允许所有头
+)
+
 
 # 为app增加接口处理耗时的响应头信息
 @app.middleware("http")
@@ -42,7 +53,7 @@ async def add_process_time_header(request: Request, call_next):
             # 尝试解析为JSON格式，便于阅读
             try:
                 body_json = json.loads(body_str)
-                body_pretty = json.dumps(body_json, indent=2, ensure_ascii=False,separators=(',', ':'))
+                body_pretty = json.dumps(body_json, indent=2, ensure_ascii=False, separators=(',', ':'))
             except json.JSONDecodeError:
                 # 如果不是JSON格式，直接记录原始字符串
                 body_pretty = body_str
@@ -66,6 +77,7 @@ async def add_process_time_header(request: Request, call_next):
 
     return response
 
+
 @app.get("/")
 async def read_root():
     return {"Hello": "red"}
@@ -78,9 +90,10 @@ def shutdown():
 
 @app.post("/red/context")
 async def redContext(req: RedContextReq):
-    if(req.type=='all'):
+    if (req.type == 'all'):
         return suc(red_spider_chrome(url=req.url))
     return suc(red_spider_requests(req.url))
+
 
 @app.post("/red/chat")
 async def redChat(req: RedChatReq):
@@ -101,6 +114,20 @@ async def get_video(filename: str):
 
     return FileResponse(path=file_path, media_type="file/mp4", filename=filename)
 
+
 @app.post("/red/comments")
 async def comments(req: RedContextReq):
     return suc(red_catch.commnts(req.url))
+
+
+@app.get("/get/img")
+async def get_img(prd: int = Query(default=0, description="Image production status"), limit: int = Query(default=240, description="Limit the number of results")):
+    return suc(data_service.queryImgAll(prd,limit))
+
+@app.post("/delete/img")
+async def delete_img(req: RedImgIdReq):
+    return suc(data_service.delete_img(req.img_ids))
+
+@app.post("/change/img")
+async def changeImgs(req: RedImgIdReq):
+    return suc(data_service.changeImgs(req))

@@ -35,7 +35,7 @@ class SingletonDriver:
         options.add_argument('--no-sandbox')  # 给予root执行权限
         options.add_argument('--disable-extensions')  # 禁止拓展
         # 设置隐私模式（无痕模式）
-        options.add_argument('--incognito')
+        # options.add_argument('--incognito')
         options.add_argument(
             'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/10.130.24.142 Safari/537.36')
         # 启用性能日志捕获
@@ -53,7 +53,7 @@ class SingletonDriver:
         # 使用 DevTools 设置用户代理和其他请求头
         userAgent = ua.chrome
         self.driver.execute_cdp_cmd('Network.setUserAgentOverride', {
-            "userAgent": f"PostmanRuntime/7.43.0",  # 设置自定义 User-Agent
+            "userAgent": f"{userAgent}",  # 设置自定义 User-Agent
         })
         self.driver.get(url)
         return self.driver.page_source

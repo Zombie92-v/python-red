@@ -5,5 +5,12 @@ from pydantic import BaseModel
 class RedContextReq(BaseModel):
     url: str
     type: str = None
+
+
 class RedChatReq(BaseModel):
     txt: str
+
+
+class RedImgIdReq(BaseModel):
+    img_ids: list
+    prd: int = 0
