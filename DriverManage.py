@@ -12,7 +12,8 @@ class SingletonDriver:
     driver = None
 
     def __init__(self):
-        if sys.platform.startswith('linux'):
+        linux = sys.platform.startswith('linux')
+        if linux:
             service = Service(executable_path="./driver/chromedriver", log_path=os.devnull)
         else:
             service = Service(executable_path="./driver/chromedriver.exe", log_path=os.devnull)
@@ -26,7 +27,8 @@ class SingletonDriver:
         options.add_experimental_option('excludeSwitches', ['enable-automation','enable-logging'])
 
         # 设置无头参数
-        options.add_argument('--headless')
+        if linux:
+            options.add_argument('--headless')
         options.add_argument('--disable-gpu')
         options.add_argument('window-size=1920,1080')
         options.add_argument('--start-maximized')
